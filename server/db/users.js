@@ -1,12 +1,12 @@
 const { client } = require('./client');
+const {generateUID} = require('./utils')
 const bcrypt = require('bcrypt')
 const saltRounds = 10
 
 const createUser = async ({name, email, password }) => {
   try {
     const hashedPass = await bcrypt.hash(password, saltRounds)
-    const uid = Date.now().toString(36) + Math.random().toString(16).slice(2)
-    console.log(name, email, hashedPass, uid)
+    const uid = generateUID()
     const { rows: [user] } = await client.query(`
     INSERT INTO users (id, name, email, password)
     VALUES ($1, $2, $3, $4)
@@ -19,7 +19,7 @@ const createUser = async ({name, email, password }) => {
   }
 }
 
-const getUserByEmail = async ({ email, password }) => {
+const getUserByEmail = async ({ email }) => {
   try {
     const { rows: [user] } = await client.query(`
     SELECT * FROM users

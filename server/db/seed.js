@@ -1,6 +1,8 @@
 const { client } = require('./client');
+const { createGame } = require('./games');
 const {
-  createUser
+  createUser, 
+  getUserByEmail
 } = require('./users')
 
 const dropTables = async () => {
@@ -32,7 +34,8 @@ const createTables = async () => {
     CREATE TABLE games (
       id SERIAL PRIMARY KEY,
       name VARCHAR(255) NOT NULL,
-      player_id VARCHAR(55) REFERENCES users(id) 
+      player_id VARCHAR(55),
+      completed BOOLEAN NOT NULL DEFAULT FALSE
     );
     
     CREATE TABLE game_players (
@@ -65,7 +68,7 @@ const usersList = [
   {
     name: 'Pistol',
     email: 'pistol_pete@fake.com',
-    password: 'password'
+    password: 'password',
   },
   {
     name: 'Lou Ferigno',
@@ -83,17 +86,29 @@ const createInitialUsers = async () => {
       const user = usersList.shift()
       newList.push(await createUser(user))
     }
-    console.log('this is users', newList)
+    return newList
     console.log('Finished creating initial users')
   } catch (error) {
     console.error('Error creating initial users', error)
   }
 }
 
-const createInitialGame = async () => {
+const createInitialGame = async (players) => {
   try {
     console.log('Creating initial game')
-
+    
+    const newList = []
+    while (players.length){
+      const user = players.shift()
+      newList.push(await getUserByEmail(user))
+    }
+    const game = {
+      name: 'Nertz',
+      playerId: newList[0].id,
+      gamePlayers: newList
+    }
+    const newGame = await createGame(game)
+    console.log(newGame)
     console.log('Finished creating initial game')
   } catch (error) {
     console.error('Error creating initial game', error)
@@ -104,7 +119,8 @@ const createInitialGame = async () => {
   try {
     await dropTables()
     await createTables()
-    await createInitialUsers()
+    const players = await createInitialUsers()
+    await createInitialGame(players)
   } catch (error) {
     console.error('Error during rebuildDB', error);
     throw error;
