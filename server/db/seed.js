@@ -1,8 +1,10 @@
 const { client } = require('./client');
-const { createGame } = require('./games');
+const { createGame, getGameById } = require('./games');
+const { updateScore } = require('./scores');
 const {
   createUser, 
-  getUserByEmail
+  getUserByEmail,
+  getUserById
 } = require('./users')
 
 const dropTables = async () => {
@@ -100,7 +102,7 @@ const createInitialGame = async (players) => {
     const newList = []
     while (players.length){
       const user = players.shift()
-      newList.push(await getUserByEmail(user))
+      newList.push(await getUserByEmail(user.email))
     }
     const game = {
       name: 'Nertz',
@@ -108,7 +110,6 @@ const createInitialGame = async (players) => {
       gamePlayers: newList
     }
     const newGame = await createGame(game)
-    console.log(newGame)
     console.log('Finished creating initial game')
   } catch (error) {
     console.error('Error creating initial game', error)

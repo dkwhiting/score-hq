@@ -1,4 +1,5 @@
 const { client } = require('./client');
+const { initializeScores } = require('./scores');
 const { generateUID } = require('./utils');
 
 const createGame = async ({name, playerId, gamePlayers}) => {
@@ -16,6 +17,8 @@ const createGame = async ({name, playerId, gamePlayers}) => {
     }) 
     )
     game.players = players
+    const scores = await initializeScores(game)
+    game.scores = scores
     return game
   } catch (error) {
     console.error(error)
@@ -38,9 +41,28 @@ const createGamePlayer = async (gameId, player) => {
   } catch (error) {
     console.error(error)
   }
+}
 
+const getGameById = async (gameId) => {
+  try {
+    const {rows: [game]} = await client.query(`
+      SELECT * FROM games
+      WHERE id = $1
+    `, [gameId])
+    const {rows: players} = await client.query(`
+      SELECT DISTINCT game_players.player_id AS id, scores.score AS score
+      FROM game_players
+      JOIN scores ON game_players.game_id = game_players.game_id
+      WHERE game_players.game_id = $1 
+    `, [gameId])
+    game.players = players
+    return game
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 module.exports = {
-  createGame
+  createGame,
+  getGameById
 }

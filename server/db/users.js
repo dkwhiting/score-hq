@@ -19,12 +19,13 @@ const createUser = async ({name, email, password }) => {
   }
 }
 
-const getUserByEmail = async ({ email }) => {
+const getUserByEmail = async ( email ) => {
   try {
     const { rows: [user] } = await client.query(`
     SELECT * FROM users
     WHERE email = $1
     `, [email])
+    console.log(user)
     return user
   } catch (error) {
     console.error(error)
