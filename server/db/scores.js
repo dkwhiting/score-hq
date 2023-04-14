@@ -24,6 +24,7 @@ const updateScore = async (gameId, playerId, newScore) => {
       WHERE $1 = game_id AND $2 = player_id
       RETURNING *
     `, [gameId, playerId])
+    console.log('this is score', score)
     return score
   } catch (error) {
     console.error(error)

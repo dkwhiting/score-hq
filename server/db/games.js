@@ -77,12 +77,13 @@ const getGamesByUserId = async (userId) => {
 
 const completeGame = async (gameId) => {
   try {
-    await client.query(`
+    const {rows: [game]} = await client.query(`
     UPDATE games
     SET completed = true
-    WHERE $1 = game_id AND $2 = player_id
+    WHERE id = $1
     RETURNING *
-  `, [gameId, playerId])
+  `, [gameId])
+  return game
   } catch (error) {
     console.error(error)
   }
@@ -90,12 +91,13 @@ const completeGame = async (gameId) => {
 
 const reactivateGame = async (gameId) => {
   try {
-    await client.query(`
+    const {rows: [game]} = await client.query(`
     UPDATE games
     SET completed = false
-    WHERE $1 = game_id AND $2 = player_id
+    WHERE id = $1
     RETURNING *
-  `, [gameId, playerId])
+  `, [gameId])
+  return game
   } catch (error) {
     console.error(error)
   }
@@ -105,5 +107,6 @@ module.exports = {
   createGame,
   getGameById,
   getGamesByUserId,
-  completeGame
+  completeGame,
+  reactivateGame
 }

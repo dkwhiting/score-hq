@@ -14,9 +14,12 @@ router.use('/', async(req, res, next) => {
         if (id) {
           req.user = await getUserById(id)
           next()
-        }}
+        } else {
+          next()
+        }
+      } 
   } catch (error) {
-    next(error)
+    next()
   }
 })
 
