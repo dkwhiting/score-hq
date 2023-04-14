@@ -1,4 +1,7 @@
 module.exports = {
   ...require('./client'),
-  ...require('./players'),
+  ...require('./users'),
+  ...require('./games'),
+  ...require('./scores'),
+  ...require('./utils')
 };

@@ -1,5 +1,25 @@
-const { client } = require('../db');
+const { client, getUserById } = require('../db');
+const jwt = require('jsonwebtoken')
 const router = require('express').Router();
+
+router.use('/', async(req, res, next) => {
+  try {
+    const prefix = 'Bearer '
+    const auth = req.header('Authorization')
+    if (!auth) {
+      next()
+    } else if (auth.startsWith(prefix)) {
+      const token = auth.slice(prefix.length)
+        const { id } = jwt.verify(token, process.env.JWT_SECRET)
+        if (id) {
+          req.user = await getUserById(id)
+          console.log(req.user)
+          next()
+        }}
+  } catch (error) {
+    next(error)
+  }
+})
 
 router.get('/health', async (req, res, next) => {
   try {
@@ -31,6 +51,7 @@ router.get('/health', async (req, res, next) => {
 
 //api/users
 router.use('/users', require('./users'));
+router.use('/games', require('./games'));
 
 router.use("/*", (error, req, res, next) => {
   res.send({

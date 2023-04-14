@@ -1,11 +1,9 @@
 const { client } = require('./client');
-const { createGame, getGameById } = require('./games');
-const { updateScore } = require('./scores');
 const {
   createUser, 
   getUserByEmail,
-  getUserById
-} = require('./users')
+  createGame,
+} = require('./')
 
 const dropTables = async () => {
   try {

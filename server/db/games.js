@@ -1,6 +1,6 @@
 const { client } = require('./client');
 const { initializeScores } = require('./scores');
-const { generateUID } = require('./utils');
+const {generateUID } = require('./utils');
 
 const createGame = async ({name, playerId, gamePlayers}) => {
   try {
@@ -62,7 +62,48 @@ const getGameById = async (gameId) => {
   }
 }
 
+const getGamesByUserId = async (userId) => {
+  try {
+    const {rows: games} = await client.query(`
+      SELECT * FROM games
+      WHERE player_id = $1
+    `, [userId])
+    console.log(games)
+    return games
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+const completeGame = async (gameId) => {
+  try {
+    await client.query(`
+    UPDATE games
+    SET completed = true
+    WHERE $1 = game_id AND $2 = player_id
+    RETURNING *
+  `, [gameId, playerId])
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+const reactivateGame = async (gameId) => {
+  try {
+    await client.query(`
+    UPDATE games
+    SET completed = false
+    WHERE $1 = game_id AND $2 = player_id
+    RETURNING *
+  `, [gameId, playerId])
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 module.exports = {
   createGame,
-  getGameById
+  getGameById,
+  getGamesByUserId,
+  completeGame
 }
