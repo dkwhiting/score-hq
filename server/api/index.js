@@ -10,9 +10,11 @@ router.use('/', async(req, res, next) => {
       next()
     } else if (auth.startsWith(prefix)) {
       const token = auth.slice(prefix.length)
-        const { id } = jwt.verify(token, process.env.JWT_SECRET)
+      const { id } = jwt.verify(token, process.env.JWT_SECRET)
+      console.log(id)
         if (id) {
           req.user = await getUserById(id)
+          console.log(req.user)
           next()
         } else {
           next()
@@ -54,6 +56,7 @@ router.get('/health', async (req, res, next) => {
 //api/users
 router.use('/users', require('./users'));
 router.use('/games', require('./games'));
+router.use('/scores', require('./scores'));
 
 router.use("/*", (error, req, res, next) => {
   res.send({

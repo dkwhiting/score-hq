@@ -37,6 +37,7 @@ const getUserById = async (userId) => {
     SELECT * FROM users
     WHERE id = $1
     `, [userId])
+    console.log(user)
     return user
   } catch (error) {
     console.error(error)

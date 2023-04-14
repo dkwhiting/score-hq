@@ -21,7 +21,7 @@ const updateScore = async (gameId, playerId, newScore) => {
     const {rows: [score]} = await client.query(`
       UPDATE scores
       SET score = ${newScore}
-      WHERE $1 = game_id AND $2 = player_id
+      WHERE game_id = $1 AND player_id = $2 
       RETURNING *
     `, [gameId, playerId])
     console.log('this is score', score)

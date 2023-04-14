@@ -6,13 +6,20 @@ const router = require('express').Router();
 // Get all games
 router.get('/:userId', async (req, res, next) => {
   try {
-    if (req.user.id === req.params.userId){
-      const games = await getGamesByUserId(req.params.userId)
-      res.send(games)
+    const games = await getGamesByUserId(req.params.userId)
+    if (games){
+    if (req.user?.id === req.params.userId){
+        res.send(games)
+      } else {
+        next({
+          name: "UnauthorizedUserError",
+          message: "Cannot view another user's games"
+        })
+      }
     } else {
       next({
-        name: "UnauthorizedUserError",
-        message: "Cannot view another user's games"
+        name: "NoGamesError",
+        message: "There are no games to display"
       })
     }
   } catch (error) {
@@ -23,8 +30,23 @@ router.get('/:userId', async (req, res, next) => {
 // Get single game 
 router.get('/:userId/:gameId', async (req, res, next) => {
   try {
+
     const game = await getGameById(req.params.gameId)
-    res.send(game)
+    if (game){
+      if (req.user?.id === game.player_id){
+        res.send(game)
+      } else {
+        next({
+          name: "UnauthorizedUserError",
+          message: "Cannot view another user's games"
+        })
+      }
+    } else {
+      next({
+        name: "GameNotFoundError",
+        message: "That game does not exist"
+      })
+    }
   } catch (error) {
     next(error) 
   }
@@ -76,29 +98,6 @@ router.patch('/:gameId', async (req, res, next)=>{
   }
 })
 
-// Update score
-router.patch('/:gameId/:playerId', async (req, res, next)=>{
-  try {
-    const game = await getGameById(req.params.gameId)
-    if (game){
-      const updatedScore = await updateScore(game.id, req.params.playerId, req.body.score)
-      if (updatedScore){
-        res.send(updatedScore)
-      } else {
-        next({
-          name: "PlayerNotFoundError",
-          message: "That player does not exist"
-        })
-      }
-    } else {
-      next({
-        name: "GameNotFoundError",
-        message: "That game does not exist"
-      })
-    }
-  } catch (error) {
-    next(error)
-  }
-})
+
 
 module.exports = router;

@@ -29,7 +29,7 @@ const createGamePlayer = async (gameId, player) => {
   debugger
   const {id, isGuest = false} = player
   if (isGuest){
-    playerId = generateUID()
+    id = generateUID()
   }
   try {
     const {rows: [player]} = await client.query(`
