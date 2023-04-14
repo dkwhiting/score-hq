@@ -50,9 +50,10 @@ const getGameById = async (gameId) => {
       WHERE id = $1
     `, [gameId])
     const {rows: players} = await client.query(`
-      SELECT DISTINCT game_players.player_id AS id, scores.score AS score
+      SELECT DISTINCT users.id AS id, users.name AS name, scores.score AS score
       FROM game_players
-      JOIN scores ON game_players.game_id = game_players.game_id
+        JOIN scores ON game_players.game_id = scores.game_id
+        JOIN users ON game_players.player_id = users.id
       WHERE game_players.game_id = $1 
     `, [gameId])
     game.players = players
@@ -68,7 +69,6 @@ const getGamesByUserId = async (userId) => {
       SELECT * FROM games
       WHERE player_id = $1
     `, [userId])
-    console.log(games)
     return games
   } catch (error) {
     console.error(error)

@@ -6,7 +6,6 @@ const { getUserByEmail, createUser } = require('../db');
 
 // POST /api/users/login
 router.post("/login", async (req, res, next) => {
-  console.log(req.body)
   const { email, password } = req.body
   try {
     const user = await getUserByEmail(email)
