@@ -3,7 +3,7 @@ const { getGamesByUserId, getGameById, createGame, completeGame, reactivateGame,
 const router = require('express').Router();
 
 
-// Get all games
+// Get all games by userId
 router.get('/:userId', async (req, res, next) => {
   try {
     const games = await getGamesByUserId(req.params.userId)
@@ -61,7 +61,6 @@ router.post('/', async (req, res, next) => {
       const newGame = await createGame({name, playerId, gamePlayers})
       const game = await getGameById(newGame.id)
       res.send(game)
-
     }
   } catch (error) {
     next(error) 
