@@ -7,12 +7,12 @@ import {setUser} from '../app/userSlice'
 import { storeData, retrieveData, setData } from '../utils'
 
 
-const Login = () => {
+const Login = ({user}) => {
   const [loginUser] = useLoginMutation()
   const [registerUser] = useRegisterMutation()
   const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('jobin@fake.com')
+  const [password, setPassword] = useState('password')
   const [error, setError] = useState('')
   const [login, setLogin] = useState(true)
   const dispatch = useDispatch()
@@ -38,17 +38,15 @@ const Login = () => {
         let response
         if (login) {
           response = await loginUser(body)
-          console.log('THIS IS LOGIN ', response)
         } else {
           response = await registerUser(body)
-          console.log(response)
         }
         if (response.error){
-          console.log(response)
-          // setError(response.error.data.message)
+          setError(response.error.data.message)
         }
         if (response.data?.user){
           setData('currentUser', JSON.stringify(response.data.user))
+          setData('token', response.data.token)
           dispatch(setUser(response.data.user))
           clearForm()
         }
@@ -60,6 +58,7 @@ const Login = () => {
 
   return (
     <View>
+      
       <Text>{login ? "Login" : "Register"}</Text>
       <Text style={{color: 'red'}}>{error}</Text>        
         {!login ?<TextInput value={name} type='text' placeholder='Name' onChangeText={setName} /> : null}

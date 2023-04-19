@@ -13,25 +13,23 @@ const Games = () => {
   
   useEffect(()=>{
     if (currentUser){
-      console.log(currentUser.id)
-      console.log(data)
-      dispatch(setGames())
+      dispatch(setGames(data))
     }    
   }, [currentUser])
 
   return (
     <View>
-      <Text>This is games!</Text>
-      {games
-        ? games.map(game =>{
-        return(
-          <>
-          {/* <Text key={game?.id}>{game?.name}</Text> */}
-          </>
-        )
-      })
-      : null
-    }
+      {
+        isLoading
+        ? <Text>Loading...</Text>
+        : data
+          ? data.map(game =>{
+            return(
+              <Text>{game.name}</Text>
+            )
+          })
+          : null
+      }
     </View>
   )
 }

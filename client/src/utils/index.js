@@ -10,14 +10,19 @@ export const setData = async (keyName, value) => {
 
 export const retrieveData = async (keyName) => {
   try {
-      const value = await AsyncStorage.getItem(keyName)
-      const jsonValue = JSON.parse(value)
-      if (jsonValue){
-        console.log('THIS IS JSONVALUE',jsonValue)
-        return jsonValue
-      }
+    const value = await AsyncStorage.getItem(keyName)
+    if(value !== null) {
+      return value
+    }
   } catch(e) {
     console.error('ERROR WITH RETRIEVE DATA', e)
-    // error reading value
+  }
+}
+
+export const removeData = async (keyName) => {
+  try {
+    await AsyncStorage.clear()
+  } catch(e) {
+    console.error('ERROR WITH REMOVE DATA', e)
   }
 }
