@@ -102,12 +102,18 @@ const createInitialGame = async (players) => {
       const user = players.shift()
       newList.push(await getUserByEmail(user.email))
     }
-    const game = {
+    const gameOne = {
       name: 'Nertz',
       playerId: newList[0].id,
       gamePlayers: newList
     }
-    const newGame = await createGame(game)
+    const gameTwo = {
+      name: 'Sabobatage',
+      playerId: newList[1].id,
+      gamePlayers: newList
+    }
+    await createGame(gameOne)
+    await createGame(gameTwo)
     console.log('Finished creating initial game')
   } catch (error) {
     console.error('Error creating initial game', error)
