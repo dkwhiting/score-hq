@@ -1,11 +1,18 @@
 import React, {useState} from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, Button, TextInput } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { decrement, increment } from '../app/userSlice'
 import { useLoginMutation, useRegisterMutation } from '../app/shopAPI'
 import {setUser} from '../app/userSlice'
+import { storeData, retrieveData, setData } from '../utils'
+import Constants from "expo-constants";
+const { manifest } = Constants;
 
-export const Login = () => {
+const api = (typeof manifest.packagerOpts === `object`) && manifest.packagerOpts.dev
+  ? manifest.debuggerHost.split(`:`).shift().concat(`:3000`)
+  : `api.example.com`;
+
+const Login = () => {
   const [loginUser] = useLoginMutation()
   const [registerUser] = useRegisterMutation()
   const [name, setName] = useState('')
@@ -24,23 +31,30 @@ export const Login = () => {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    console.log(api)
     try {
       if (!email || !password){
         setError('Please enter a valid username and password')
       } else {
+        const body = {
+          name,
+          email,
+          password
+        }
         let response
         if (login) {
-          response = await loginUser({email, password})
+          response = await loginUser(body)
+          console.log(response)
         } else {
-          response = await registerUser({name, email, password})
+          response = await registerUser(body)
+          console.log(response)
         }
         if (response.error){
-          setError(response.error.data.message)
+          console.log(response)
+          // setError(response.error.data.message)
         }
         if (response.data?.user){
-          localStorage.setItem('currentUser', JSON.stringify(response.data.user))
-          localStorage.setItem('token', response.data.token)
+          setData('currentUser', JSON.stringify(response.data.user))
           dispatch(setUser(response.data.user))
           clearForm()
         }
@@ -52,25 +66,24 @@ export const Login = () => {
 
   return (
     <View>
-      <Text><h2>{login ? "Login" : "Register"}</h2></Text>
-      <Text style={{color: 'red'}}>{error}</Text>
-      <form onSubmit={(e)=>handleSubmit(e)}>
-        
-        {!login ?<input value={name} type='text' placeholder='Name' onChange={(e) => setName(e.target.value)} /> : null}
-        <input value={email} type='text' placeholder='Email' onChange={(e) => setEmail(e.target.value) } />
-        <input value={password} type='password' placeholder='Password' onChange={(e) => setPassword(e.target.value)}/>
-        <button type='submit'>Submit</button>
-      </form>
+      <Text>{login ? "Login" : "Register"}</Text>
+      <Text style={{color: 'red'}}>{error}</Text>        
+        {!login ?<TextInput value={name} type='text' placeholder='Name' onChangeText={setName} /> : null}
+        <TextInput value={email} type='text' placeholder='Email' onChangeText={setEmail} />
+        <TextInput value={password} type='password' placeholder='Password' onChangeText={setPassword}/>
+        <Button title="Submit" onPress={()=>handleSubmit()} />
       {login
       ? <Text>
         Need an account?
-        <a onClick={() => {setLogin(false); clearForm()}}> Click here to register.</a>
+        
       </Text>
       : <Text>
         Already have an account?
-        <a onClick={() => {setLogin(false); clearForm()}}> Click here to sign in.</a>
+        
     </Text>
     }
     </View>
   )
 }
+
+export default Login

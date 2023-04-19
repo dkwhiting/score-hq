@@ -1,10 +1,9 @@
-import { StyleSheet, View, } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import { store } from './src/app/store';
 import { Provider } from 'react-redux';
-import  Main  from './Main'
+import Main from './Main'
 
-export default function App() {
-
+const App = () => {
 
   return (
   <Provider store={store}>
@@ -22,3 +21,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+export default App
