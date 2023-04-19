@@ -5,12 +5,7 @@ import { decrement, increment } from '../app/userSlice'
 import { useLoginMutation, useRegisterMutation } from '../app/shopAPI'
 import {setUser} from '../app/userSlice'
 import { storeData, retrieveData, setData } from '../utils'
-import Constants from "expo-constants";
-const { manifest } = Constants;
 
-const api = (typeof manifest.packagerOpts === `object`) && manifest.packagerOpts.dev
-  ? manifest.debuggerHost.split(`:`).shift().concat(`:3000`)
-  : `api.example.com`;
 
 const Login = () => {
   const [loginUser] = useLoginMutation()
@@ -31,7 +26,6 @@ const Login = () => {
   }
 
   const handleSubmit = async (e) => {
-    console.log(api)
     try {
       if (!email || !password){
         setError('Please enter a valid username and password')
@@ -44,7 +38,7 @@ const Login = () => {
         let response
         if (login) {
           response = await loginUser(body)
-          console.log(response)
+          console.log('THIS IS LOGIN ', response)
         } else {
           response = await registerUser(body)
           console.log(response)

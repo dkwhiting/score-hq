@@ -6,21 +6,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { setUser } from './src/app/userSlice';
 
+const initializeUser = () => {
+  AsyncStorage.getItem('currentUser', (err, result) => {
+    dispatch(setUser(result))
+  });
+}
+
 const Main = () => {
   const user = useSelector(state => state.user.currentUser)
   const dispatch = useDispatch()
 
   useEffect(()=>{
+    console.log('this is user', user)
     if (!user){
-      const initialUser = AsyncStorage.getItem('UID123', (err, result) => {
-        console.log('this is result',result);
-        return result
-      });
-      if (initialUser){
-        console.log(initialUser)
-      }
+      
     }
-  }, [user])
+  }, [])
 
 
   return (
