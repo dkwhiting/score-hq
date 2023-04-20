@@ -1,11 +1,14 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {API_URL} from '@env'
+const ANDROID_API = 'http://172.31.183.210:8080/api'
+
 
 // Define a service using a base URL and expected endpoints
 export const shopAPI = createApi({
   reducerPath: 'shopAPI',
   baseQuery: fetchBaseQuery({ 
-    baseUrl: 'http://172.31.183.210:8080/api',
+    baseUrl: API_URL || process.env.API_URL,
     prepareHeaders: async (headers) => {
       const token = await AsyncStorage.getItem('token')
       if (token) {

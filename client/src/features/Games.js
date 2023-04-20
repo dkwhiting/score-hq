@@ -22,10 +22,10 @@ const Games = () => {
       {
         isLoading
         ? <Text>Loading...</Text>
-        : data
+        : data?.length > 0
           ? data.map(game =>{
             return(
-              <Text>{game.name}</Text>
+              <Text key={game.id}>{game.name}</Text>
             )
           })
           : null

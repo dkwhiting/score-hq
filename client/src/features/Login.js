@@ -8,12 +8,12 @@ import { storeData, retrieveData, setData } from '../utils'
 
 
 const Login = ({user}) => {
-  const [loginUser] = useLoginMutation()
+  const [loginUser, {isLoading, error}] = useLoginMutation()
   const [registerUser] = useRegisterMutation()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('jobin@fake.com')
   const [password, setPassword] = useState('password')
-  const [error, setError] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
   const [login, setLogin] = useState(true)
   const dispatch = useDispatch()
   const currentUser = useSelector((state)=> state.user.currentUser)
@@ -22,13 +22,13 @@ const Login = ({user}) => {
     setName('')
     setEmail('')
     setPassword('')
-    setError('')
+    setErrorMessage('')
   }
 
   const handleSubmit = async (e) => {
     try {
       if (!email || !password){
-        setError('Please enter a valid username and password')
+        setErrorMessage('Please enter a valid username and password')
       } else {
         const body = {
           name,
@@ -37,12 +37,15 @@ const Login = ({user}) => {
         }
         let response
         if (login) {
+          console.log('LOGGING IN')
           response = await loginUser(body)
+          console.log(error)
+          console.log(response)
         } else {
           response = await registerUser(body)
         }
         if (response.error){
-          setError(response.error.data.message)
+          setErrorMessage(response.error.data.message)
         }
         if (response.data?.user){
           setData('currentUser', JSON.stringify(response.data.user))
@@ -58,9 +61,14 @@ const Login = ({user}) => {
 
   return (
     <View>
-      
+      {
+        isLoading
+        ? <Text>LOGGING IN...</Text>
+        : <>
+        
       <Text>{login ? "Login" : "Register"}</Text>
-      <Text style={{color: 'red'}}>{error}</Text>        
+      <Text style={{color: 'red'}}>{errorMessage}</Text>        
+        {error ? <Text style={{color: 'red'}}>{error.status}{JSON.stringify(error.data)}</Text> : null }   
         {!login ?<TextInput value={name} type='text' placeholder='Name' onChangeText={setName} /> : null}
         <TextInput value={email} type='text' placeholder='Email' onChangeText={setEmail} />
         <TextInput value={password} type='password' placeholder='Password' onChangeText={setPassword}/>
@@ -75,6 +83,8 @@ const Login = ({user}) => {
         
     </Text>
     }
+    </>
+  }
     </View>
   )
 }
