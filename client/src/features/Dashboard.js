@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { useGetAllGamesQuery } from '../app/shopAPI';
 import { setGames } from '../app/gamesSlice';
 
-const Games = () => {
+const Dashboard = () => {
   const dispatch = useDispatch()
   const currentUser = useSelector(state=> state.user?.currentUser)
   const { data, error, isLoading } = useGetAllGamesQuery(currentUser?.id)
@@ -17,6 +17,7 @@ const Games = () => {
     }    
   }, [currentUser])
 
+
   return (
     <View>
       {
@@ -24,6 +25,7 @@ const Games = () => {
         ? <Text>Loading...</Text>
         : data?.length > 0
           ? data.map(game =>{
+            console.log(game.name)
             return(
               <Text key={game.id}>{game.name}</Text>
             )
@@ -34,4 +36,4 @@ const Games = () => {
   )
 }
 
-export default Games
+export default Dashboard

@@ -1,15 +1,17 @@
 import { Button, StyleSheet, Text, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Login from './src/features/Login';
-import Games from './src/features/Games';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { setUser } from './src/app/userSlice';
 import { removeData } from './src/utils';
 import { useGetAllGamesQuery } from './src/app/shopAPI';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import Dashboard from './src/features/Dashboard';
 
+const Stack = createNativeStackNavigator();
 
-const Main = () => {
+const Main = ({styles}) => {
   const {data, isLoading, isError} = useGetAllGamesQuery()
   const user = useSelector(state => state.user.currentUser)
   const dispatch = useDispatch()
@@ -40,6 +42,7 @@ const Main = () => {
 
 
   return (
+    
     <View style={styles.container}>
       <Button title="Logout" onPress={()=> {
         removeData('currentUser');
@@ -49,20 +52,15 @@ const Main = () => {
       {
       !user
       ? <Login/>
-      : <Games/>
-
+      : <Stack.Navigator>
+          <Stack.Screen
+            name="Dashboard"
+            component={Dashboard}
+          />
+        </Stack.Navigator>
     }   
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default Main
