@@ -8,6 +8,7 @@ import { removeData } from './src/utils';
 import { useGetAllGamesQuery } from './src/app/shopAPI';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Dashboard from './src/features/Dashboard';
+import { NavigationContainer } from '@react-navigation/native';
 
 const Stack = createNativeStackNavigator();
 
@@ -43,7 +44,7 @@ const Main = ({styles}) => {
 
   return (
     
-    <View style={styles.container}>
+    <View style={{width: '100%', height: '100%'}}>
       <Button title="Logout" onPress={()=> {
         removeData('currentUser');
         dispatch(setUser(null));
@@ -52,12 +53,11 @@ const Main = ({styles}) => {
       {
       !user
       ? <Login/>
-      : <Stack.Navigator>
-          <Stack.Screen
-            name="Dashboard"
-            component={Dashboard}
-          />
-        </Stack.Navigator>
+      : <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen name="Dashboard" component={Dashboard} />
+          </Stack.Navigator>
+        </NavigationContainer>
     }   
     </View>
   );
