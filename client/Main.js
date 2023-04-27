@@ -2,9 +2,8 @@ import { Button, StyleSheet, Text, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Login from './src/features/Login';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useEffect} from 'react';
 import { setUser } from './src/app/userSlice';
-import { removeData } from './src/utils';
 import { useGetAllGamesQuery } from './src/app/shopAPI';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Dashboard from './src/features/Dashboard';
@@ -12,7 +11,7 @@ import { NavigationContainer } from '@react-navigation/native';
 
 const Stack = createNativeStackNavigator();
 
-const Main = ({styles}) => {
+const Main = () => {
   const {data, isLoading, isError} = useGetAllGamesQuery()
   const user = useSelector(state => state.user.currentUser)
   const dispatch = useDispatch()
@@ -45,11 +44,6 @@ const Main = ({styles}) => {
   return (
     
     <View style={{width: '100%', height: '100%'}}>
-      <Button title="Logout" onPress={()=> {
-        removeData('currentUser');
-        dispatch(setUser(null));
-
-        }} />
       {
       !user
       ? <Login/>
