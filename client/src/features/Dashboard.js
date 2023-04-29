@@ -4,6 +4,7 @@ import {useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useGetAllGamesQuery } from '../app/shopAPI';
 import { setGames } from '../app/gamesSlice';
+import Skeleton from './Skeleton';
 
 const Dashboard = ({navigation}) => {
   const dispatch = useDispatch()
@@ -19,10 +20,12 @@ const Dashboard = ({navigation}) => {
 
 
   return (
-    <View style={{backgroundColor: 'orange'}}>
+    <View className="flex flex-col">
       {
         isLoading
-        ? <Text>Loading...</Text>
+        ? 
+        <Skeleton />
+        
         : data?.length > 0
           ? data.map(game =>{
             return(
