@@ -1,5 +1,4 @@
 import React from 'react'
-import { View, Text } from 'react-native'
 import {useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useGetAllGamesQuery } from '../app/shopAPI';
@@ -20,7 +19,7 @@ const Dashboard = ({navigation}) => {
 
 
   return (
-    <View className="flex flex-col">
+    <div className="flex flex-col">
       {
         isLoading
         ? 
@@ -29,12 +28,12 @@ const Dashboard = ({navigation}) => {
         : data?.length > 0
           ? data.map(game =>{
             return(
-              <Text key={game.id}>{game.name}</Text>
+              <p key={game.id}>{game.name}</p>
             )
           })
           : null
       }
-    </View>
+    </div>
   )
 }
 

@@ -1,8 +1,7 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const setData = async (keyName, value) => {
   try {
-    await AsyncStorage.setItem(keyName, value)
+    localStorage.setItem(keyName, value)
   } catch (e) {
     console.error('ERROR WITH SET DATA', e)
   }
@@ -10,7 +9,7 @@ export const setData = async (keyName, value) => {
 
 export const retrieveData = async (keyName) => {
   try {
-    const value = await AsyncStorage.getItem(keyName)
+    const value = await localStorage.getItem(keyName)
     if(value !== null) {
       return value
     }
@@ -21,7 +20,7 @@ export const retrieveData = async (keyName) => {
 
 export const removeData = async (keyName) => {
   try {
-    await AsyncStorage.clear()
+    await localStorage.clear()
   } catch(e) {
     console.error('ERROR WITH REMOVE DATA', e)
   }
