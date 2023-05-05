@@ -62,7 +62,7 @@ const Login = ({user}) => {
   }
 
   return (
-    <div className="bg-white h-full px-6 justify-center">
+    <div className="flex flex-col flex-1 bg-white px-6 items-align justify-center">
       <div className="mb-5 flex flex-row justify-center">
         <p className="font-bold text-center text-5xl text-fuchsia-800">
           SCORE 
@@ -85,12 +85,12 @@ const Login = ({user}) => {
             <div className="flex flex-col gap-3 items-center w-full">
 
               {!login 
-                ?<input className="w-full border-solid border-slate-400 border rounded-2xl px-3 py-2" value={name} type='text' placeholder='Name' onChange={setName} /> 
+                ?<input className="w-full border-solid border-slate-400 border rounded-2xl px-3 py-2" value={name} type='text' placeholder='Name' onChange={e =>setName(event.target.value)} /> 
                 : null
               }
 
-              <input className="w-full border-solid border-slate-400 border rounded-2xl px-3 py-2" value={email} type='text' placeholder='Email' onChange={setEmail} />
-              <input className="w-full border-solid border-slate-400 border rounded-2xl px-3 py-2" value={password} type='password' placeholder='Password' onChange={setPassword}/>
+              <input className="w-full border-solid border-slate-400 border rounded-2xl px-3 py-2" value={email} type='text' placeholder='Email' onChange={e =>setEmail(event.target.value)} />
+              <input className="w-full border-solid border-slate-400 border rounded-2xl px-3 py-2" value={password} type='password' placeholder='Password' onChange={e =>setPassword(event.target.value)}/>
               <button className="w-4/5 bg-red-400 flex align-center items-center rounded-2xl px-3 py-2" title="Submit" onClick={()=>handleSubmit()} >
                 <p className="text-white text-xl">Submit</p>
               </button>

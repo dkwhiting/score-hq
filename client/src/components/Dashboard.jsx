@@ -19,9 +19,9 @@ const Dashboard = ({navigation}) => {
 
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col flex-1">
       {
-        isLoading
+        !isLoading
         ? 
         <Skeleton />
         
