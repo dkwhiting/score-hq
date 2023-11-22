@@ -1,7 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-console.log(import.meta.env.VITE_API_URL)
-
 // Define a service using a base URL and expected endpoints
 export const shopAPI = createApi({
   reducerPath: 'shopAPI',

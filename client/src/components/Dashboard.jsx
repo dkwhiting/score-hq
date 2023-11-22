@@ -19,18 +19,25 @@ const Dashboard = ({navigation}) => {
 
 
   return (
-    <div className="flex flex-col flex-1">
+    <div className="flex flex-col flex-1 w-3/5 items-center">
       {
-        !isLoading
+        isLoading
         ? 
         <Skeleton />
         
         : data?.length > 0
           ? data.map(game =>{
+            console.log(game)
             return(
-              <p key={game.id}>{game.name}</p>
+              <div role="status" key={game.id} className="w-full p-4 space-y-4 border border-gray-200 divide-y divide-gray-200 rounded shadow dark:divide-gray-700 md:p-6 dark:border-gray-700">
+                <div className="flex items-center justify-between">
+                  <div>
+                        <p>{game.name}</p>
+                  </div>
+                </div>
+              </div>
             )
-          })
+          }) 
           : null
       }
     </div>

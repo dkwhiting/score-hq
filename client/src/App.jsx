@@ -35,7 +35,7 @@ const Main = () => {
 
   return (
     
-    <div className="flex flex-col h-full w-full bg-gray-800">
+    <div className="flex flex-col h-full w-full items-center bg-gray-800">
       {
         !user
         ? <Login/>

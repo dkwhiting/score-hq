@@ -37,7 +37,9 @@ const Login = ({user}) => {
         }
         let response
         if (login) {
+          console.log('we are logging in')
           response = await loginUser(body)
+          console.log(response)
 
         } else {
           response = await registerUser(body)
@@ -62,7 +64,7 @@ const Login = ({user}) => {
   }
 
   return (
-    <div className="flex flex-col flex-1 bg-white px-6 items-align justify-center">
+    <div className="flex flex-col flex-1 px-6 items-align justify-center">
       <div className="mb-5 flex flex-row justify-center">
         <p className="font-bold text-center text-5xl text-fuchsia-800">
           SCORE 
@@ -73,7 +75,9 @@ const Login = ({user}) => {
       </div>
       {
         isLoading
-        ? <p>Loading...</p>
+        ? <div className="absolute w-full h-full top-0 left-0">
+          <Loading message="Logging In" />
+        </div>
         : null
       }
         <div className="flex flex-col gap-2 items-center">

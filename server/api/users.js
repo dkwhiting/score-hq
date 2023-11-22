@@ -20,7 +20,6 @@ router.post("/login", async (req, res, next) => {
       if (user && match) {
         delete user.password
         const token = jwt.sign(user, process.env.JWT_SECRET)
-        console.log(user)
         res.send({ message: "You're logged in!", user: user, token: token })
       } else {
         res.status(401)
@@ -56,7 +55,6 @@ router.post("/register", async (req, res, next) => {
       } else {
         const user = await createUser({name: name, email: email, password: password })
         const token = jwt.sign(user, process.env.JWT_SECRET)
-        console.log(user)
         res.send({ message: "You're registered!", user: user, token: token })
       }
     }
