@@ -8,9 +8,11 @@ import Footer from './components/Footer'
 import Header from './components/Header';
 
 const Main = () => {
+  const [darkMode, setDarkMode] = useState(false)
   const {data, isLoading, isError} = useGetAllGamesQuery()
   const user = useSelector(state => state.user.currentUser)
   const dispatch = useDispatch()
+  
   
   const initializeUser = () => {
     const currentUser = localStorage.getItem('currentUser')
@@ -34,17 +36,19 @@ const Main = () => {
   }, [])
 
   return (
-    
-    <div className="flex flex-col h-full w-full items-center bg-gray-800">
-      {
-        !user
-        ? <Login/>
-        : <>
-            <Header />
-            <Dashboard />
-            <Footer />
-          </>
-    }   
+    <div className={`h-full ${darkMode ? 'dark' : ''}`}>
+      
+      <div className="flex flex-col h-full w-full items-center bg-white dark:bg-gray-800 text-black dark:text-white">
+        {
+          !user
+          ? <Login/>
+          : <>
+              <Header darkMode={darkMode} setDarkMode={setDarkMode}/>
+              <Dashboard />
+              <Footer />
+            </>
+      }
+      </div>
     </div>
   );
 }

@@ -8,7 +8,7 @@ import { setUser } from '../app/userSlice';
 const Footer = () => {
   const dispatch = useDispatch()
   return (
-    <div className="flex-none w-full h-20 bg-slate-500">
+    <div className="flex items-center flex-none w-full h-10 bg-slate-200 dark:bg-slate-500">
       <button onClick={()=> {
         removeData('currentUser');
         dispatch(setUser(null));
