@@ -6,11 +6,13 @@ import { useGetAllGamesQuery } from './app/shopAPI';
 import Dashboard from './components/Dashboard';
 import Footer from './components/Footer'
 import Header from './components/Header';
+import { setGames } from './app/gamesSlice';
 
 const Main = () => {
   const [darkMode, setDarkMode] = useState(false)
-  const {data, isLoading, isError} = useGetAllGamesQuery()
   const user = useSelector(state => state.user.currentUser)
+  const games = useSelector(state => state.user.games)
+  const {data, isLoading, isError} = useGetAllGamesQuery(user?.id)
   const dispatch = useDispatch()
   
   
@@ -19,26 +21,30 @@ const Main = () => {
     dispatch(setUser(JSON.parse(currentUser)))
     const token = localStorage.getItem('token')
   }
-
+  
   const initializeGames = () => {
+    
+    
 
   }
   
   useEffect(()=>{
     if (!user){
       initializeUser()
-      if (user) {
-        initializeGames(user.id)
-      }
     } else {
-      initializeGames(user.id)
+      dispatch(setGames(data))
     }
   }, [])
+
+  useEffect(()=>{
+    //initialize games upon user change
+    dispatch(setGames(data))
+  },[user])
 
   return (
     <div className={`h-full ${darkMode ? 'dark' : ''}`}>
       
-      <div className="flex flex-col h-full w-full items-center bg-white dark:bg-gray-800 text-black dark:text-white">
+      <div className="flex flex-col h-full bg-white dark:bg-gray-800 text-black dark:text-white">
         {
           !user
           ? <Login/>
