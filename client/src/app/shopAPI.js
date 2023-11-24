@@ -41,9 +41,20 @@ export const shopAPI = createApi({
       query: (userId) => `games/${userId}`,
       providesTags: ['Games'],
     }),
+    createNewGame: builder.mutation({
+      query(body) {
+        return {
+          url: 'games',
+          method: 'POST',
+          body
+        }
+      },
+      providesTags: ['User'],
+      invalidatesTags: ['User', 'Games']
+    }),
   }),
 })
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useLoginMutation, useRegisterMutation, useGetAllGamesQuery } = shopAPI
+export const { useLoginMutation, useRegisterMutation, useGetAllGamesQuery, useCreateNewGameMutation } = shopAPI
