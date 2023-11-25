@@ -38,6 +38,7 @@ router.post("/login", async (req, res, next) => {
 // POST /api/users/register
 router.post("/register", async (req, res, next) => {
   const { name, email, password } = req.body
+  console.log(req.body)
   try {
     if (password.length < 6){
       res.status(401)

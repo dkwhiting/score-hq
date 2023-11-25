@@ -16,6 +16,7 @@ const Dashboard = ({navigation}) => {
   useEffect(()=>{
     if (currentUser){
       dispatch(setGames(data))
+      console.log(data)
     }    
   }, [currentUser])
 

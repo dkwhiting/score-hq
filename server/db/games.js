@@ -1,5 +1,6 @@
 const { client } = require('./client');
 const { initializeScores } = require('./scores');
+const { createUser } = require('./users');
 const {generateUID } = require('./utils');
 
 const createGame = async ({name, playerId, gamePlayers}) => {
@@ -10,6 +11,7 @@ const createGame = async ({name, playerId, gamePlayers}) => {
     RETURNING *
     `, [name, playerId])
     const players = await Promise.all(gamePlayers.map(async(player) =>{
+      console.log('THIS IS A RESPONSE', player)
       const response = await createGamePlayer(game.id, player)
       delete response.id
       delete response.game_id
@@ -19,6 +21,7 @@ const createGame = async ({name, playerId, gamePlayers}) => {
     game.players = players
     const scores = await initializeScores(game)
     game.scores = scores
+
     return game
   } catch (error) {
     console.error(error)
@@ -27,9 +30,11 @@ const createGame = async ({name, playerId, gamePlayers}) => {
 
 const createGamePlayer = async (gameId, player) => {
   debugger
-  const {id, isGuest = false} = player
+  let {id, name, isGuest = true} = player
   if (isGuest){
-    id = generateUID()
+    const user = createUser({name: name})
+    id = user.id
+    console.log(user.id)
   }
   try {
     const {rows: [player]} = await client.query(`
@@ -69,6 +74,11 @@ const getGamesByUserId = async (userId) => {
       SELECT * FROM games
       WHERE player_id = $1
     `, [userId])
+    games.map( async (game) => {
+      const fetchGame = await getGameById(game.id)
+      game.players = fetchGame.players
+      return game
+    })
     return games
   } catch (error) {
     console.error(error)

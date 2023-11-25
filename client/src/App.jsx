@@ -38,13 +38,15 @@ const Main = () => {
 
   useEffect(()=>{
     //initialize games upon user change
-    dispatch(setGames(data))
+    if (user){
+      dispatch(setGames(data))
+    }
   },[user])
 
   return (
-    <div className={`h-full ${darkMode ? 'dark' : ''}`}>
+    <div className={`h-full ${darkMode ? 'dark' : ''} transition-all duration-300`}>
       
-      <div className="flex flex-col h-full bg-white dark:bg-gray-800 text-black dark:text-white">
+      <div className="flex flex-col h-full bg-white dark:bg-gray-800 text-black dark:text-white transition-all duration-300">
         {
           !user
           ? <Login/>
