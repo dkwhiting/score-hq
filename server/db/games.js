@@ -61,7 +61,8 @@ const getGameById = async (gameId) => {
         JOIN users ON game_players.player_id = users.id
       WHERE game_players.game_id = $1 
     `, [gameId])
-    game.players = players
+    console.log(players)
+
     return game
   } catch (error) {
     console.error(error)

@@ -33,6 +33,7 @@ const Main = () => {
       initializeUser()
     } else {
       dispatch(setGames(data))
+      console.log(data)
     }
   }, [])
 
