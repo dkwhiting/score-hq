@@ -1,17 +1,13 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {API_URL} from '@env'
-const ANDROID_API = 'http://172.31.183.210:8080/api'
-
 
 // Define a service using a base URL and expected endpoints
 export const shopAPI = createApi({
   reducerPath: 'shopAPI',
   baseQuery: fetchBaseQuery({ 
-    baseUrl: API_URL || process.env.API_URL,
+    baseUrl: import.meta.env.VITE_API_URL,
     prepareHeaders: async (headers) => {
-      const token = await AsyncStorage.getItem('token')
-      if (token) {
+      const token = localStorage.getItem('token')
+      if (token?.length > 0) {
         headers.set("Authorization", `Bearer ${token}`)
       }
       return headers
@@ -45,9 +41,20 @@ export const shopAPI = createApi({
       query: (userId) => `games/${userId}`,
       providesTags: ['Games'],
     }),
+    createNewGame: builder.mutation({
+      query(body) {
+        return {
+          url: 'games',
+          method: 'POST',
+          body
+        }
+      },
+      providesTags: ['User'],
+      invalidatesTags: ['User', 'Games']
+    }),
   }),
 })
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useLoginMutation, useRegisterMutation, useGetAllGamesQuery } = shopAPI
+export const { useLoginMutation, useRegisterMutation, useGetAllGamesQuery, useCreateNewGameMutation } = shopAPI

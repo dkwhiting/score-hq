@@ -1,5 +1,4 @@
 import React from 'react'
-import { Text, View, Button } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
 import { removeData } from '../utils';
 import { setUser } from '../app/userSlice';
@@ -9,13 +8,14 @@ import { setUser } from '../app/userSlice';
 const Footer = () => {
   const dispatch = useDispatch()
   return (
-    <View style={{width: '100%', height: 65, backgroundColor: '#CCC', marginTop: 'auto'}}>
-      <Button title="Logout" onPress={()=> {
+    <div className="flex items-center flex-none w-full h-10 bg-slate-200 dark:bg-slate-500">
+      <button onClick={()=> {
         removeData('currentUser');
         dispatch(setUser(null));
-
-        }} />
-    </View>
+        }}>
+          Logout
+        </button>
+    </div>
   )
 }
 

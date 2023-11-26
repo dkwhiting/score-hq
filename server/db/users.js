@@ -5,12 +5,15 @@ const saltRounds = 10
 
 const createUser = async ({name, email, password }) => {
   try {
-    const hashedPass = await bcrypt.hash(password, saltRounds)
+    let hashedPass
+    if (password){
+      hashedPass = await bcrypt.hash(password, saltRounds)
+    }
     const uid = generateUID()
     const { rows: [user] } = await client.query(`
-    INSERT INTO users (id, name, email, password)
-    VALUES ($1, $2, $3, $4)
-    RETURNING *
+      INSERT INTO users (id, name, email, password)
+      VALUES ($1, $2, $3, $4)
+      RETURNING *
     `, [uid, name, email, hashedPass])
     delete user.password
     return user
@@ -22,8 +25,8 @@ const createUser = async ({name, email, password }) => {
 const getUserByEmail = async ( email) => {
   try {
     const { rows: [user] } = await client.query(`
-    SELECT * FROM users
-    WHERE email = $1
+      SELECT * FROM users
+      WHERE email = $1
     `, [email])
     return user
   } catch (error) {
@@ -34,10 +37,9 @@ const getUserByEmail = async ( email) => {
 const getUserById = async (userId) => {
   try {
     const {rows: [user]} = await client.query(`
-    SELECT * FROM users
-    WHERE id = $1
+      SELECT * FROM users
+      WHERE id = $1
     `, [userId])
-    console.log(user)
     return user
   } catch (error) {
     console.error(error)

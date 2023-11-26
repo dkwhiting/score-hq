@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const router = require('express').Router();
 
 router.use('/', async(req, res, next) => {
+  debugger
   try {
     const prefix = 'Bearer '
     const auth = req.header('Authorization')
@@ -11,10 +12,8 @@ router.use('/', async(req, res, next) => {
     } else if (auth.startsWith(prefix)) {
       const token = auth.slice(prefix.length)
       const { id } = jwt.verify(token, process.env.JWT_SECRET)
-      console.log(id)
         if (id) {
           req.user = await getUserById(id)
-          console.log(req.user)
           next()
         } else {
           next()
