@@ -1,10 +1,7 @@
 import React from 'react'
 import {
   createBrowserRouter,
-  Link,
-  Route,
   RouterProvider,
-  Routes,
 } from "react-router-dom";
 import Root from './Root';
 

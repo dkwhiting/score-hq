@@ -1,9 +1,10 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useLoginMutation, useRegisterMutation } from '../app/shopAPI'
 import {setUser} from '../app/userSlice'
 import { removeData, retrieveData, setData } from '../utils'
 import Loading from './Loading'
+import { redirect, useNavigate } from 'react-router-dom'
 
 
 const Login = ({user}) => {
@@ -16,6 +17,13 @@ const Login = ({user}) => {
   const [login, setLogin] = useState(true)
   const dispatch = useDispatch()
   const currentUser = useSelector((state)=> state.user.currentUser)
+  const navigate = useNavigate()
+
+  useEffect(()=>{
+    if (user) {
+      navigate("/dashboard")
+    }
+  }, [])
 
   const clearForm = () =>{
     setName('')
@@ -37,7 +45,6 @@ const Login = ({user}) => {
         }
         let response
         if (login) {
-          console.log('we are logging in')
           response = await loginUser(body)
           console.log(response)
 
@@ -53,6 +60,7 @@ const Login = ({user}) => {
           setData('token', response.data.token)
           dispatch(setUser(response.data.user))
           clearForm()
+          navigate("/dashboard")
         } else if (response.data?.message){
           setErrorMessage(response.data.message)
           setPassword('')
