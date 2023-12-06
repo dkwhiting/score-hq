@@ -1,9 +1,10 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useLoginMutation, useRegisterMutation } from '../app/shopAPI'
 import {setUser} from '../app/userSlice'
 import { removeData, retrieveData, setData } from '../utils'
 import Loading from './Loading'
+import { redirect, useNavigate } from 'react-router-dom'
 
 
 const Login = ({user}) => {
@@ -16,6 +17,13 @@ const Login = ({user}) => {
   const [login, setLogin] = useState(true)
   const dispatch = useDispatch()
   const currentUser = useSelector((state)=> state.user.currentUser)
+  const navigate = useNavigate()
+
+  useEffect(()=>{
+    if (user) {
+      navigate("/dashboard")
+    }
+  }, [])
 
   const clearForm = () =>{
     setName('')
@@ -37,7 +45,6 @@ const Login = ({user}) => {
         }
         let response
         if (login) {
-          console.log('we are logging in')
           response = await loginUser(body)
           console.log(response)
 
@@ -53,6 +60,7 @@ const Login = ({user}) => {
           setData('token', response.data.token)
           dispatch(setUser(response.data.user))
           clearForm()
+          navigate("/dashboard")
         } else if (response.data?.message){
           setErrorMessage(response.data.message)
           setPassword('')
@@ -89,12 +97,12 @@ const Login = ({user}) => {
             <div className="flex flex-col gap-3 items-center w-full">
 
               {!login 
-                ?<input className="w-full border-solid border-slate-400 border rounded-2xl px-3 py-2" value={name} type='text' placeholder='Name' onChange={e =>setName(event.target.value)} /> 
+                ?<input className="text-black w-full border-solid border-slate-400 border rounded-2xl px-3 py-2" value={name} type='text' placeholder='Name' onChange={e =>setName(event.target.value)} /> 
                 : null
               }
 
-              <input className="w-full border-solid border-slate-400 border rounded-2xl px-3 py-2" value={email} type='text' placeholder='Email' onChange={e =>setEmail(event.target.value)} />
-              <input className="w-full border-solid border-slate-400 border rounded-2xl px-3 py-2" value={password} type='password' placeholder='Password' onChange={e =>setPassword(event.target.value)}/>
+              <input className="text-black w-full border-solid border-slate-400 border rounded-2xl px-3 py-2" value={email} type='text' placeholder='Email' onChange={e =>setEmail(event.target.value)} />
+              <input className="text-black w-full border-solid border-slate-400 border rounded-2xl px-3 py-2" value={password} type='password' placeholder='Password' onChange={e =>setPassword(event.target.value)}/>
               <button className="w-4/5 bg-red-400 flex align-center items-center rounded-2xl px-3 py-2" title="Submit" onClick={()=>handleSubmit()} >
                 <p className="text-white text-xl">Submit</p>
               </button>

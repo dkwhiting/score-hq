@@ -11,7 +11,6 @@ const createGame = async ({name, playerId, gamePlayers}) => {
     RETURNING *
     `, [name, playerId])
     const players = await Promise.all(gamePlayers.map(async(player) =>{
-      console.log('THIS IS A RESPONSE', player)
       const response = await createGamePlayer(game.id, player)
       delete response.id
       delete response.game_id
@@ -21,7 +20,6 @@ const createGame = async ({name, playerId, gamePlayers}) => {
     game.players = players
     const scores = await initializeScores(game)
     game.scores = scores
-
     return game
   } catch (error) {
     console.error(error)
@@ -32,9 +30,8 @@ const createGamePlayer = async (gameId, player) => {
   debugger
   let {id, name, isGuest = true} = player
   if (isGuest){
-    const user = createUser({name: name})
+    const user = await createUser({name: name})
     id = user.id
-    console.log(user.id)
   }
   try {
     const {rows: [player]} = await client.query(`
@@ -61,8 +58,7 @@ const getGameById = async (gameId) => {
         JOIN users ON game_players.player_id = users.id
       WHERE game_players.game_id = $1 
     `, [gameId])
-    console.log(players)
-
+    game.players = players
     return game
   } catch (error) {
     console.error(error)
@@ -70,17 +66,21 @@ const getGameById = async (gameId) => {
 }
 
 const getGamesByUserId = async (userId) => {
+  const newArr = []
   try {
     const {rows: games} = await client.query(`
       SELECT * FROM games
       WHERE player_id = $1
     `, [userId])
-    games.map( async (game) => {
+    await Promise.all(games.map( async (game) => {
       const fetchGame = await getGameById(game.id)
       game.players = fetchGame.players
-      return game
+      newArr.push(game)
+      console.log(newArr)
     })
-    return games
+    )
+    console.log('now THIS is game' , newArr)
+    return newArr
   } catch (error) {
     console.error(error)
   }

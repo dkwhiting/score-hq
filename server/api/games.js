@@ -6,10 +6,10 @@ const router = require('express').Router();
 // Get all games by userId
 router.get('/:userId', async (req, res, next) => {
   try {
-    console.log(req.params)
     const games = await getGamesByUserId(req.params.userId)
     if (games){
     if (req.user?.id === req.params.userId){
+        console.log('API GAMES', games)
         res.send(games)
       } else {
         next({
