@@ -16,6 +16,7 @@ import Footer from './components/Footer'
 import Header from './components/Header';
 import NotFound from './components/NotFound';
 import AuthRoute from './components/AuthRoute';
+import SingleGameDash from './components/SingleGameDash';
 
 const Root = () => {
   const [darkMode, setDarkMode] = useState(false)
@@ -71,6 +72,9 @@ const Root = () => {
           <Route 
             path="/login" 
             element={<Login />} />
+          <Route 
+            path="/games/:gameId" 
+            element={<SingleGameDash />} />
           <Route 
             path="*" 
             element={<NotFound />} />
