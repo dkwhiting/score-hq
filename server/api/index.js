@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken')
 const router = require('express').Router();
 
 router.use('/', async(req, res, next) => {
-  debugger
   try {
     const prefix = 'Bearer '
     const auth = req.header('Authorization')

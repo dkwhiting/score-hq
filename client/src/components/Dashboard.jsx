@@ -5,6 +5,7 @@ import { useGetAllGamesQuery } from '../app/shopAPI';
 import { setGames } from '../app/gamesSlice';
 import Skeleton from './Skeleton';
 import NewGameModal from './NewGameModal';
+import { Icon } from '@iconify/react';
 
 const Dashboard = ({navigation}) => {
   const dispatch = useDispatch()
@@ -46,11 +47,15 @@ const Dashboard = ({navigation}) => {
                     return !game.completed
                   })
                   .map(game =>{
+                    console.log(game)
                     return(
-                      <div role="status" key={game.id} className="w-full p-4 space-y-4 border border-gray-200 divide-y divide-gray-200 rounded shadow dark:divide-gray-700 md:p-6 dark:border-gray-700">
+                      <div role="status" key={game.id} className="hover:cursor-pointer hover:bg-black/10 dark:hover:bg-white/10 w-full p-4 space-y-4 border border-gray-200 divide-y divide-gray-200 rounded shadow dark:divide-gray-700 md:p-6 dark:border-gray-700">
                         <div className="flex items-center justify-between">
-                          <div>
+                          <div className="flex justify-between w-full">
                             <p>{game.name}</p>
+                            <div className="flex items-center">
+                              <Icon icon="material-symbols:person"/>{game.players.length}
+                            </div>
                           </div>
                         </div>
                       </div>

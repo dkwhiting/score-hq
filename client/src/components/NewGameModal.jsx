@@ -35,6 +35,12 @@ const NewGameModal = ({setShowNewGameModal}) => {
     }
   }
 
+  const handleEnter = (e) => {
+    if (e.target.className.includes('player-input') && e.key === "Enter"){
+      handleAddPlayer(playerName)
+    }
+  }
+
   const handleAddPlayer = (playerName) => {
     if (playerName !== '') {
       setGamePlayers([...gamePlayers, {name: playerName}])
@@ -78,7 +84,7 @@ const NewGameModal = ({setShowNewGameModal}) => {
                 }
                 {toggleNewPlayer
                   ? <div className="flex items-center gap-2">
-                      <input placeholder='Enter player name' value={playerName} className="grow w-full border-2 border-black/50 text-black rounded-xl p-1" onChange={(e)=>setPlayerName(e.target.value)} autoFocus/>
+                      <input onKeyUp={(e)=>handleEnter(e)} placeholder='Enter player name' value={playerName} className="player-input grow w-full border-2 border-black/50 text-black rounded-xl p-1" onChange={(e)=>setPlayerName(e.target.value)} autoFocus/>
                       <div className="hover:cursor-pointer flex-0 h-8 w-8 text-2xl flex-none flex items-center justify-center" onClick={()=>handleAddPlayer(playerName)}>
                         <Icon icon="ph:check-bold" color="#58D68D" className="w-full h-full" />
                       </div>
