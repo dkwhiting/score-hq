@@ -7,6 +7,10 @@ export default {
   theme: {
     extend: {transitionProperty: {
       'height': 'height'
+      },
+      flex: {
+        '1.5': '1.5 1.5 0%',
+        '2': '2 2 0%'
       }
     }
   },

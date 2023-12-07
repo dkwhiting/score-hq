@@ -17,6 +17,7 @@ import Header from './components/Header';
 import NotFound from './components/NotFound';
 import AuthRoute from './components/AuthRoute';
 import SingleGameDash from './components/SingleGameDash';
+import NewGameModal from './components/NewGameModal';
 
 const Root = () => {
   const [darkMode, setDarkMode] = useState(false)
@@ -57,7 +58,7 @@ const Root = () => {
   return (
     <div className={`h-full ${darkMode ? 'dark' : ''} transition-all duration-300`}>
       
-      <div className="flex flex-col h-full bg-white dark:bg-gray-800 text-black dark:text-white transition-all duration-300">
+      <div className="flex flex-col h-full bg-white dark:bg-gray-800 text-black dark:text-white transition-all duration-300 relative">
         <Header darkMode={darkMode} setDarkMode={setDarkMode}/>
         <Routes>
           
@@ -73,13 +74,11 @@ const Root = () => {
             element={<Login />} />
           <Route 
             path="/games/:gameId" 
-            loader={async ({ params }) => {
-              return data.filter((game)=> {
-                return game.id === params.gameId
-              })
-            }}
             element={<SingleGameDash />} 
-            action={({ params }) => {}}
+            />
+          <Route 
+            path="/games/new" 
+            element={<NewGameModal />} 
             />
           <Route 
             path="*" 

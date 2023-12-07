@@ -15,7 +15,7 @@ const SingleGameDash = () => {
 
 
   return (
-    <div>{data?.name}</div>
+    <div className="h-full">{data?.name}</div>
   )
 }
 
