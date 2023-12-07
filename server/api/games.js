@@ -29,7 +29,8 @@ router.get('/:userId', async (req, res, next) => {
 })
 
 // Get single game 
-router.get('/:userId/:gameId', async (req, res, next) => {
+router.get('/userId/:gameId', async (req, res, next) => {
+  debugger
   try {
 
     const game = await getGameById(req.params.gameId)

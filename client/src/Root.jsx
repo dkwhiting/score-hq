@@ -43,7 +43,6 @@ const Root = () => {
       initializeUser()
     } else {
       dispatch(setGames(data))
-      console.log(data)
     }
   }, [])
 
@@ -74,7 +73,14 @@ const Root = () => {
             element={<Login />} />
           <Route 
             path="/games/:gameId" 
-            element={<SingleGameDash />} />
+            loader={async ({ params }) => {
+              return data.filter((game)=> {
+                return game.id === params.gameId
+              })
+            }}
+            element={<SingleGameDash />} 
+            action={({ params }) => {}}
+            />
           <Route 
             path="*" 
             element={<NotFound />} />

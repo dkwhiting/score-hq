@@ -103,7 +103,7 @@ const Login = ({user}) => {
 
               <input className="text-black w-full border-solid border-slate-400 border rounded-2xl px-3 py-2" value={email} type='text' placeholder='Email' onChange={e =>setEmail(event.target.value)} />
               <input className="text-black w-full border-solid border-slate-400 border rounded-2xl px-3 py-2" value={password} type='password' placeholder='Password' onChange={e =>setPassword(event.target.value)}/>
-              <button className="w-4/5 bg-red-400 flex align-center items-center rounded-2xl px-3 py-2" title="Submit" onClick={()=>handleSubmit()} >
+              <button className="bg-red-400 flex align-center items-center rounded-2xl px-3 py-2" title="Submit" onClick={()=>handleSubmit()} >
                 <p className="text-white text-xl">Submit</p>
               </button>
             {

@@ -41,6 +41,10 @@ export const shopAPI = createApi({
       query: (userId) => `games/${userId}`,
       providesTags: ['Games'],
     }),
+    getSingleGame: builder.query({
+      query: (gameId) => `games/userId/${gameId}`,
+      providesTags: ['Games'],
+    }),
     createNewGame: builder.mutation({
       query(body) {
         return {
@@ -57,4 +61,4 @@ export const shopAPI = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useLoginMutation, useRegisterMutation, useGetAllGamesQuery, useCreateNewGameMutation } = shopAPI
+export const { useLoginMutation, useRegisterMutation, useGetAllGamesQuery, useGetSingleGameQuery, useCreateNewGameMutation } = shopAPI

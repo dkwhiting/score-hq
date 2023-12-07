@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import {useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import { useGetAllGamesQuery } from '../app/shopAPI';
 import { setGames } from '../app/gamesSlice';
+import { Icon } from '@iconify/react';
 import Skeleton from './Skeleton';
 import NewGameModal from './NewGameModal';
-import { Icon } from '@iconify/react';
 
 const Dashboard = ({navigation}) => {
   const dispatch = useDispatch()
@@ -13,6 +14,7 @@ const Dashboard = ({navigation}) => {
   const { data, error, isLoading } = useGetAllGamesQuery(currentUser?.id)
   const games = useSelector(state => state.games?.games)
   const [showNewGameModal, setShowNewGameModal] = useState(false)
+  const navigate = useNavigate()
   
   useEffect(()=>{
     if (currentUser){
@@ -47,9 +49,12 @@ const Dashboard = ({navigation}) => {
                     return !game.completed
                   })
                   .map(game =>{
-                    console.log(game)
                     return(
-                      <div role="status" key={game.id} className="hover:cursor-pointer hover:bg-black/10 dark:hover:bg-white/10 w-full p-4 space-y-4 border border-gray-200 divide-y divide-gray-200 rounded shadow dark:divide-gray-700 md:p-6 dark:border-gray-700">
+                      <div 
+                        key={game.id} 
+                        className="hover:cursor-pointer hover:bg-black/10 dark:hover:bg-white/10 w-full p-4 space-y-4 border border-gray-200 divide-y divide-gray-200 rounded shadow dark:divide-gray-700 md:p-6 dark:border-gray-700"
+                        onClick={()=>navigate(`/games/${game.id}`)}
+                        >
                         <div className="flex items-center justify-between">
                           <div className="flex justify-between w-full">
                             <p>{game.name}</p>
