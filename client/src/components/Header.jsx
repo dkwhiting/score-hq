@@ -13,7 +13,7 @@ const Header = ({darkMode, setDarkMode}) => {
 
 
   return (
-    <div className={`flex w-full justify-center bg-slate-200 text-black dark:bg-slate-600 dark:text-white transition-all duration-300 ${toggleOpen ? 'h-44' : 'h-9'}`} >
+    <div className={`flex w-full justify-center bg-slate-200 text-black dark:bg-slate-600 dark:text-white transition-all duration-300 py-2 ${toggleOpen ? 'h-44' : 'h-14'}`} >
       <div className="flex w-full justify-between px-3" >
         <PopoutButton toggleOpen={toggleOpen} setToggleOpen={setToggleOpen}/>
         <div className='flex h-8 w-8 hover:cursor-pointer hover:bg-white/25 rounded-full p-1' onClick={() => setDarkMode(!darkMode)}>
